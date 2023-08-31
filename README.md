@@ -5,5 +5,5 @@ Realizzare un telecomando che trasmetta codici NEC in base al tasto digitato su 
 La simulazione della versione finale del Telecomando si trova in questo link:
 [Telecomando - Completo](https://wokwi.com/projects/374504307076985857)
 
-# Relazione
-La relazione si trova in questa repository nella cartella ...
+# File del Logic Analyzer
+Nella cartella "File LogicAnalyzer" sono presenti tutti i file .vcd su cui ho fatto i vari test descritti nella Relazione. E' presente un ulteriore file .vcd dove sono presenti le trasmissioni NEC di tutti i tasti del Keypad
