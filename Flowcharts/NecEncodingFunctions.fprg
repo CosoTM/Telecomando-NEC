@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="3.0">
+    <attributes>
+        <attribute name="name" value=""/>
+        <attribute name="authors" value="Mattia"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2023-08-31 02:45:57 "/>
+        <attribute name="created" value="TWF0dGlhO0NPU09JTkM7MjAyMy0wOC0xMTsiMDE6MTA6MTAgIjsyMzA5"/>
+        <attribute name="edited" value="TWF0dGlhO0NPU09JTkM7MjAyMy0wOC0zMTsiMDI6NDU6NTcgIjsxNDsyNDkx"/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <comment text="I due contatori: counter1 verr&#224; settato al valore desiderato, mentre counter2 verr&#224; aumentato ogni 562.5us. "/>
+            <assign variable="counter1" expression="0"/>
+            <assign variable="counter2" expression="0"/>
+            <comment text="stateCounter contiene i due valori di Impulso e Spazio che vogliamo raggiungere per ogni segmento."/>
+            <declare name="stateCounter" type="Integer" array="True" size="2"/>
+            <comment text="burstCount tiene conto dello stato del segmento. 0 = trasmettendo Impulso,      1 = trasmettendo Spazio, 2 = Entrambi sono stati trasmessi"/>
+            <assign variable="burstCount" expression="0"/>
+            <comment text="bitCount quando mandiamo i byte di Indirizzi e Comandi, tiene conto di quanti bit sono stati trasmessi. "/>
+            <assign variable="bitCount" expression="0"/>
+            <comment text="phaseCount tiene conto della fase attuale della trasmissione."/>
+            <assign variable="phaseCount" expression="0"/>
+        </body>
+    </function>
+    <function name="buildNEC" type="None" variable="">
+        <parameters>
+            <parameter name="code" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <if expression="bitCount &lt; 8">
+                <then>
+                    <assign variable="burstCount" expression="0"/>
+                    <assign variable="stateCount[0]" expression="1"/>
+                    <if expression="(code &gt;&gt; bitCount) &amp; 1">
+                        <then>
+                            <assign variable="stateCount[1]" expression="3"/>
+                        </then>
+                        <else>
+                            <assign variable="stateCount[1]" expression="1"/>
+                        </else>
+                    </if>
+                    <assign variable="bitCount" expression="bitCount+1"/>
+                </then>
+                <else>
+                    <assign variable="phaseCounter" expression="phaseCounter+1"/>
+                    <assign variable="bitCount" expression="0"/>
+                </else>
+            </if>
+            <call expression="burstGenerator()"/>
+        </body>
+    </function>
+    <function name="burstGenerator" type="None" variable="">
+        <parameters/>
+        <body>
+            <comment text="Eseguito ad ogni cambio di stato, ha il compito di inserire il tempo del nuovo stato nella variabile counter1."/>
+            <if expression="burstCount &lt; 2">
+                <then>
+                    <assign variable="counter1" expression="stateCount[burstCount]"/>
+                    <comment text="Ad ogni esecuzione burstCount viene aumentato per tenere conto dello stato in cui ci troviamo."/>
+                    <assign variable="burstCount" expression="burstCount+1"/>
+                </then>
+                <else>
+                    <comment text="Se burstCount &#232; =2 allora abbiamo trasmesso entrambi gli stati del segmento attuale, chiamiamo quindi phaseChange() per cambiare eventualmente fase di trasmissione."/>
+                    <call expression="phaseChange()"/>
+                </else>
+            </if>
+        </body>
+    </function>
+    <function name="routineDiConteggio" type="None" variable="">
+        <parameters/>
+        <body>
+            <comment text="Eseguita ogni 562.5us. Quando counter2 raggiunge counter1 lo stato attuale ha raggiunto il tempo desiderato, e dobbiamo quindi cambiare counter1 nel tempo del prossimo stato. "/>
+            <assign variable="counter2" expression="counter2+1"/>
+            <if expression="counter2 == counter1">
+                <then>
+                    <call expression="burstGenerator()"/>
+                    <comment text="Alterniamo l'attivit&#224; del generatore di Frequenza portante con uno XOR. Siccome ad ogni Impulso segue uno Spazio, se nello stato attuale il Generatore era acceso, nel prossimo sar&#224; necessariamente spento e viceversa."/>
+                    <assign variable="TCCR2A" expression="TCCR2A ^ BV(COM2A0)"/>
+                    <comment text="Azzeriamo counter2 per prepararlo a contare per il prossimo stato."/>
+                    <assign variable="counter2" expression="0"/>
+                </then>
+                <else/>
+            </if>
+        </body>
+    </function>
+</flowgorithm>

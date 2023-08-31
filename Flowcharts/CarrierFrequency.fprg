@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="3.0">
+    <attributes>
+        <attribute name="name" value=""/>
+        <attribute name="authors" value="Mattia"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2023-08-31 02:41:31 "/>
+        <attribute name="created" value="TWF0dGlhO0NPU09JTkM7MjAyMy0wOC0xMTsiMDE6MTA6MTAgIjsyMzA5"/>
+        <attribute name="edited" value="TWF0dGlhO0NPU09JTkM7MjAyMy0wOC0zMTsiMDI6NDE6MzEgIjsxNjsyNDgx"/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <assign variable="direzionePinScelto" expression="OUTPUT"/>
+            <assign variable="statoPinScelto" expression="LOW"/>
+            <comment text="Imposto il mio Timer in CTC e imposto il suo registro di confronto cos&#236; da poter generare un Interrupt ad una frequenza di circa 76kHz."/>
+        </body>
+    </function>
+    <function name="TimerInterrupt" type="None" variable="">
+        <parameters/>
+        <body>
+            <assign variable="statoPinScelto" expression="NOT StatoPinScelto"/>
+        </body>
+    </function>
+</flowgorithm>

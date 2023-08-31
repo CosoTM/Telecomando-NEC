@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="3.0">
+    <attributes>
+        <attribute name="name" value=""/>
+        <attribute name="authors" value="Mattia"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2023-08-31 12:40:19 "/>
+        <attribute name="created" value="TWF0dGlhO0NPU09JTkM7MjAyMy0wOC0xMTsiMDE6MTA6MTAgIjsyMzA5"/>
+        <attribute name="edited" value="TWF0dGlhO0NPU09JTkM7MjAyMy0wOC0zMTsiMTI6Mzk6MzAgIjsxO01hdHRpYTtDT1NPSU5DOzIwMjMtMDgtMTE7IjAxOjEwOjEwICI7Rmxvd0NoYXJ0X0NvbXBsZXRvX3Y0IC0gc2Vjb25kaSBmbG93Y2hhcnQuZnByZzs5Mjkx"/>
+        <attribute name="edited" value="TWF0dGlhO0NPU09JTkM7MjAyMy0wOC0zMTsiMTI6NDA6MTkgIjsxNTsyNDg2"/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <comment text="Nel setup, i pin delle righe vengono messi ad OUTPUT HIGH, mentre le colonne ad INPUT PULL-UP."/>
+        </body>
+    </function>
+    <function name="keypadScan" type="Integer" variable="keyCode">
+        <parameters/>
+        <body>
+            <comment text="Nel setup, i pin delle righe vengono messi ad OUTPUT HIGH, mentre le colonne ad INPUT PULL-UP."/>
+            <declare name="shiftArray" type="Integer" array="True" size="4"/>
+            <comment text="Ogni elemento di shiftArray rappresenta i pin dell righe con una riga alla volta messa ad OUTPUT LOW. "/>
+            <declare name="keyCode" type="Integer" array="False" size=""/>
+            <assign variable="keyCode" expression="NOKEY"/>
+            <for variable="i" start="0" end="4" direction="inc" step="1">
+                <assign variable="pinRighe" expression="shiftArray[i]"/>
+                <for variable="j" start="0" end="3" direction="inc" step="1">
+                    <if expression="(pinColonne &amp; BV(j)) == 0">
+                        <then>
+                            <assign variable="keyCode" expression="i*3+j"/>
+                        </then>
+                        <else/>
+                    </if>
+                </for>
+            </for>
+            <comment text="Alla fine della funzione, i pin delle righe e delle colonne vengono ripristinate allo stato originalmente settato nel setup."/>
+        </body>
+    </function>
+    <function name="keypadScan2" type="Integer" variable="keyCode">
+        <parameters/>
+        <body>
+            <comment text="Nel setup, i pin delle righe vengono messi ad OUTPUT HIGH, mentre le colonne ad INPUT PULL-UP."/>
+            <declare name="keyCode" type="Integer" array="False" size=""/>
+            <assign variable="keyCode" expression="NOKEY"/>
+            <for variable="i" start="0" end="4" direction="inc" step="1">
+                <assign variable="pinRighe" expression="NOT (BV(6-i))"/>
+                <for variable="j" start="0" end="3" direction="inc" step="1">
+                    <if expression="(pinColonne &amp; BV(j)) == 0">
+                        <then>
+                            <assign variable="keyCode" expression="i*3+j"/>
+                        </then>
+                        <else/>
+                    </if>
+                </for>
+            </for>
+            <comment text="Alla fine della funzione, i pin delle righe e delle colonne vengono ripristinate allo stato originalmente settato nel setup."/>
+        </body>
+    </function>
+</flowgorithm>
