@@ -6,4 +6,4 @@ La simulazione della versione finale del Telecomando si trova a questo link:
 [Telecomando - Completo](https://wokwi.com/projects/374504307076985857)
 
 # File del Logic Analyzer
-Nella cartella "File LogicAnalyzer" sono presenti tutti i file .vcd su cui ho fatto i vari test descritti nella Relazione. E' inoltre presente un ulteriore il file "Nec_TuttiTasti.vcd" dove sono presenti le trasmissioni NEC di tutti i tasti del Keypad.
+Nella cartella "File LogicAnalyzer" sono presenti tutti i file .vcd su cui ho fatto i vari test descritti nella Relazione. E' inoltre presente un ulteriore file "Nec_TuttiTasti.vcd" dove sono presenti le trasmissioni NEC di tutti i tasti del Keypad.
